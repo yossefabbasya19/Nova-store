@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/core/helper/snack_bar.dart';
 import 'package:ecommerce_app/core/resources/assets_manager.dart';
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/values_manager.dart';
@@ -5,15 +6,35 @@ import 'package:ecommerce_app/core/routes_manager/routes.dart';
 import 'package:ecommerce_app/core/widget/custom_elevated_button.dart';
 import 'package:ecommerce_app/core/widget/main_text_field.dart';
 import 'package:ecommerce_app/core/widget/validators.dart';
+import 'package:ecommerce_app/features/auth/data/model/signin_request.dart';
+import 'package:ecommerce_app/features/auth/data/model/user_DM.dart';
+import 'package:ecommerce_app/features/auth/presentation/view_model/auth_cubit.dart';
+import 'package:ecommerce_app/features/auth/presentation/view_model/auth_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/resources/font_manager.dart';
 import '../../../../core/resources/styles_manager.dart';
 
-class SignInScreen extends StatelessWidget {
+class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
+
+  @override
+  State<SignInScreen> createState() => _SignInScreenState();
+}
+
+class _SignInScreenState extends State<SignInScreen> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +68,10 @@ class SignInScreen extends StatelessWidget {
                   height: AppSize.s50.h,
                 ),
                 BuildTextField(
+                  controller: emailController,
                   backgroundColor: ColorManager.white,
-                  hint: 'enter your name',
-                  label: 'User name',
+                  hint: 'enter your email',
+                  label: 'email',
                   textInputType: TextInputType.emailAddress,
                   validation: AppValidators.validateEmail,
                 ),
@@ -57,6 +79,7 @@ class SignInScreen extends StatelessWidget {
                   height: AppSize.s28.h,
                 ),
                 BuildTextField(
+                  controller: passwordController,
                   hint: 'enter your password',
                   backgroundColor: ColorManager.white,
                   label: 'Password',
@@ -82,22 +105,39 @@ class SignInScreen extends StatelessWidget {
                 SizedBox(
                   height: AppSize.s60.h,
                 ),
-                Center(
-                  child: SizedBox(
-                    // width: MediaQuery.of(context).size.width * .8,
-                    child: CustomElevatedButton(
-                      // borderRadius: AppSize.s8,
-                      isStadiumBorder: false,
-                      label: 'Login',
-                      backgroundColor: ColorManager.white,
-                      textStyle: getBoldStyle(
-                          color: ColorManager.primary, fontSize: AppSize.s18),
-                      onTap: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, Routes.mainRoute, (route) => false);
-                      },
-                    ),
-                  ),
+                BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is SigninFailure) {
+                      snackBar(context, state.errorMessage);
+                    }
+                    if (state is SigninSuccess) {
+                      snackBar(context, "success");
+                    }
+                  },
+                  builder: (context, state) {
+                    return Center(
+                      child: SizedBox(
+                        // width: MediaQuery.of(context).size.width * .8,
+                        child: CustomElevatedButton(
+                          // borderRadius: AppSize.s8,
+                          isStadiumBorder: false,
+                          label: 'Login',
+                          backgroundColor: ColorManager.white,
+                          textStyle: getBoldStyle(
+                              color: ColorManager.primary,
+                              fontSize: AppSize.s18),
+                          onTap: () async{
+                            Navigator.pushReplacementNamed(context, Routes.mainRoute);
+                           await  BlocProvider.of<AuthCubit>(context).signIn(
+                                SigninRequest(
+                                    email: emailController.text,
+                                    password: passwordController.text));
+                           print(UserDm.currentUser!.userName);
+                          },
+                        ),
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(
                   height: 30.h,

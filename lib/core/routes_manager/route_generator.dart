@@ -1,16 +1,19 @@
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
+import 'package:ecommerce_app/features/auth/data/data_source/auth_api_data_source.dart';
+import 'package:ecommerce_app/features/auth/data/repo/auth_repo_imple.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:ecommerce_app/features/auth/presentation/view_model/auth_cubit.dart';
 import 'package:ecommerce_app/features/cart/screens/cart_screen.dart';
 import 'package:ecommerce_app/features/main_layout/main_layout.dart';
 import 'package:ecommerce_app/features/product_details/presentation/screen/product_details.dart';
 import 'package:ecommerce_app/features/products_screen/presentation/screens/products_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RouteGenerator {
   static Route<dynamic> getRoute(RouteSettings settings) {
     switch (settings.name) {
-
       case Routes.cartRoute:
         return MaterialPageRoute(builder: (_) => const CartScreen());
       case Routes.mainRoute:
@@ -23,10 +26,18 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const ProductDetails());
 
       case Routes.signInRoute:
-        return MaterialPageRoute(builder: (_) => const SignInScreen());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                create: (context) =>
+                    AuthCubit(AuthRepoImple(dataSource: AuthApiDataSource())),
+                child: const SignInScreen()));
 
       case Routes.signUpRoute:
-        return MaterialPageRoute(builder: (_) => const SignUpScreen());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                create: (context) =>
+                    AuthCubit(AuthRepoImple(dataSource: AuthApiDataSource())),
+                child: const SignUpScreen()));
       default:
         return unDefinedRoute();
     }

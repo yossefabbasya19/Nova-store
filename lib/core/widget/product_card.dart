@@ -70,56 +70,54 @@ class ProductCard extends StatelessWidget {
             //     ),
             //   ),
             // ),
-            Expanded(
-              flex: 1,
-              child: Stack(
-                alignment: AlignmentDirectional.center,
-                children: [
-                  SizedBox(
-                    height: height,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(24.r),
-                        topRight: Radius.circular(24.r),
-                      ),
-                      child: AspectRatio(
-                        aspectRatio: 16 / 9,
-                        child: Image.asset(
-                          image,
-                          fit: BoxFit.cover,
-                        ),
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                SizedBox(
+                  height: height*0.2,
+                  width: width,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(24.r),
+                      topRight: Radius.circular(24.r),
+                    ),
+                    child: AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Image.network(
+                        image,
+                        fit: BoxFit.fill,
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: height * 0.01,
-                    right: width * 0.02,
-                    child: Container(
-                      height: height * 0.036,
-                      width: width * 0.08,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            spreadRadius: 2,
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: InkWell(
-                        onTap: () {},
-                        child: Image.asset(
-                          IconsAssets.icWithList,
-                          color: ColorManager.primary,
+                ),
+                Positioned(
+                  top: height * 0.01,
+                  right: width * 0.02,
+                  child: Container(
+                    height: height * 0.036,
+                    width: width * 0.08,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
                         ),
+                      ],
+                    ),
+                    child: InkWell(
+                      onTap: () {},
+                      child: Image.asset(
+                        IconsAssets.icWithList,
+                        color: ColorManager.primary,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
             Expanded(
               flex: 1,
@@ -129,6 +127,7 @@ class ProductCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
+                      maxLines: 1,
                       truncateTitle(title),
                       style: getMediumStyle(
                         color: ColorManager.primary,
@@ -138,12 +137,14 @@ class ProductCard extends StatelessWidget {
                     SizedBox(height: 8.h),
                     Text(
                       truncateTitle(description),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                       style: getRegularStyle(
                         color: ColorManager.primary,
                         fontSize: 14.sp,
                       ),
                     ),
-                    SizedBox(height: 8.h),
+                    SizedBox(height: 4.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

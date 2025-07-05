@@ -1,19 +1,19 @@
 class CategoryDetailsDm {
-  final String id;
+  final String? id;
 
-  final String name;
-  final String slug;
-  final String image;
-  final String createdAt;
-  final String updatedAt;
+  final String? name;
+  final String? slug;
+  final String? image;
+  final String? createdAt;
+  final String? updatedAt;
 
   CategoryDetailsDm(
-      {required this.id,
-      required this.name,
-      required this.slug,
-      required this.image,
-      required this.createdAt,
-      required this.updatedAt});
+      { this.id,
+       this.name,
+       this.slug,
+       this.image,
+       this.createdAt,
+       this.updatedAt});
 
   factory CategoryDetailsDm.fromJson(json) {
     return CategoryDetailsDm(

@@ -20,7 +20,7 @@ class CustomBrandWidget extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Image.network(
-              brandsDetailsDm.image,
+              brandsDetailsDm.image!,
               fit: BoxFit.scaleDown,
             ),
           ),

@@ -45,7 +45,7 @@ class CustomCategoryWidget extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             child: Image.network(
-              categoryDetailsDm.image,
+              categoryDetailsDm.image!,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) =>
                   Image(image: AssetImage(ImageAssets.noImage)),
@@ -55,7 +55,7 @@ class CustomCategoryWidget extends StatelessWidget {
         SizedBox(height: 8.h),
         FittedBox(
           child: Text(
-            categoryDetailsDm.name,
+            categoryDetailsDm.name!,
             style: getRegularStyle(color: ColorManager.darkBlue, fontSize: 14.sp),
           ),
         ),

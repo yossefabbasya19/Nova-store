@@ -3,10 +3,9 @@ import 'package:ecommerce_app/core/di/di.dart';
 import 'package:ecommerce_app/core/helper/snack_bar.dart';
 import 'package:ecommerce_app/core/model/brands_dm/brands_details_dm.dart';
 import 'package:ecommerce_app/core/model/category_dm/category_details_dm.dart';
+import 'package:ecommerce_app/core/model/product_dm/Data.dart';
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/widget/product_card.dart';
-import 'package:ecommerce_app/features/main_layout/home/data/data_source/home_api_data_source.dart';
-import 'package:ecommerce_app/features/main_layout/home/data/repo/home_repo_imple.dart';
 import 'package:ecommerce_app/features/main_layout/home/presentation/view/widgets/custom_brand_widget.dart';
 import 'package:ecommerce_app/features/main_layout/home/presentation/view/widgets/custom_category_widget.dart';
 import 'package:ecommerce_app/features/main_layout/home/presentation/view_model/home_cubit.dart';
@@ -30,6 +29,7 @@ class _HomeTabState extends State<HomeTab> {
   late Timer _timer;
   List<CategoryDetailsDm> categorys = [];
   List<BrandsDetailsDm> brands = [];
+  List<ProductDetailsDM> products = [];
   late HomeCubit homeCubit;
 
   final List<String> adsImages = [
@@ -49,7 +49,7 @@ class _HomeTabState extends State<HomeTab> {
   loadCategory() async {
     await homeCubit.getAllCategory();
     await homeCubit.getAllBrands();
-    homeCubit.brandsPagination();
+    await homeCubit.getBestSeller();
   }
 
   void _startImageSwitching() {
@@ -93,26 +93,26 @@ class _HomeTabState extends State<HomeTab> {
                     builder: (context, state) {
                       return state is GetAllCategoryLoading
                           ? Center(
-                              child: CircularProgressIndicator(
-                                color: ColorManager.darkBlue,
-                              ),
-                            )
+                        child: CircularProgressIndicator(
+                          color: ColorManager.darkBlue,
+                        ),
+                      )
                           : SizedBox(
-                              height: 270.h,
-                              child: GridView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return CustomCategoryWidget(
-                                    categoryDetailsDm: categorys[index],
-                                  );
-                                },
-                                itemCount: categorys.length,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                ),
-                              ),
+                        height: 270.h,
+                        child: GridView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return CustomCategoryWidget(
+                              categoryDetailsDm: categorys[index],
                             );
+                          },
+                          itemCount: categorys.length,
+                          gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                        ),
+                      );
                     },
                   ),
                   SizedBox(height: 12.h),
@@ -128,52 +128,67 @@ class _HomeTabState extends State<HomeTab> {
                     builder: (context, state) {
                       return state is GetAllCategoryLoading
                           ? Center(
-                              child: CircularProgressIndicator(
-                                color: ColorManager.darkBlue,
-                              ),
-                            )
+                        child: CircularProgressIndicator(
+                          color: ColorManager.darkBlue,
+                        ),
+                      )
                           : SizedBox(
-                              height: 270.h,
-                              child: GridView.builder(
-                                controller: homeCubit.brandsScrollController,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return CustomBrandWidget(
-                                    brandsDetailsDm: brands[index],
-                                  );
-                                },
-                                itemCount: brands.length,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                ),
-                              ),
+                        height: 270.h,
+                        child: GridView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) {
+                            return CustomBrandWidget(
+                              brandsDetailsDm: brands[index],
                             );
+                          },
+                          itemCount: brands.length,
+                          gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
+                        ),
+                      );
                     },
                   ),
                   CustomSectionBar(
                     sectionNname: 'Most Selling Products',
                     function: () {},
                   ),
-                  SizedBox(
-                    child: SizedBox(
-                      height: 360.h,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return const ProductCard(
-                            title: "Nike Air Jordon",
-                            description:
-                                "Nike is a multinational corporation that designs, develops, and sells athletic footwear ,apparel, and accessories",
-                            rating: 4.5,
-                            price: 1100,
-                            priceBeforeDiscound: 1500,
-                            image: ImageAssets.categoryHomeImage,
-                          );
-                        },
-                        itemCount: 20,
-                      ),
-                    ),
+                  BlocConsumer<HomeCubit, HomeState>(
+                    listener: (context, state) {
+                     if(state is GetBestSellerFailure){
+                       snackBar(context, state.errorMessage);
+                     }else if(state is GetBestSellerSuccess){
+                       products.addAll(state.products);
+                     }
+                    },
+                    builder: (context, state) {
+                      return state is GetBestSellerLoading?Center(
+                        child: CircularProgressIndicator(
+                          color: ColorManager.darkBlue,
+                        ),
+                      ):SizedBox(
+                        child: SizedBox(
+                          height: 360.h,
+                          child: ListView.builder(
+
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return  ProductCard(
+                                title: products[index].title!,
+                                description:
+                                products[index].description!,
+                                rating: 4.5,
+                                price: 1100,
+                                priceBeforeDiscound: 1500,
+                                image: products[index].imageCover!,
+                              );
+                            },
+                            itemCount: products.length,
+                          ),
+                        ),
+                      );
+                    },
                   ),
                   SizedBox(height: 12.h),
                 ],

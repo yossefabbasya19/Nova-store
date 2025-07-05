@@ -6,7 +6,7 @@ import 'package:ecommerce_app/features/main_layout/favourite/presentation/favour
 import 'package:ecommerce_app/features/main_layout/profile_tab/presentation/profile_tab.dart';
 import 'package:flutter/material.dart';
 
-import 'home/presentation/home_tab.dart';
+import 'home/presentation/view/home_tab.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -35,16 +35,16 @@ class _MainLayoutState extends State<MainLayout> {
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 0.1,
           child: BottomNavigationBar(
+            selectedFontSize: 0,
             currentIndex: currentIndex,
             onTap: (value) => changeSelectedIndex(value),
             backgroundColor: ColorManager.primary,
             type: BottomNavigationBarType.fixed,
             selectedItemColor: ColorManager.primary,
             unselectedItemColor: ColorManager.white,
-            showSelectedLabels: false, // Hide selected item labels
-            showUnselectedLabels: false, // Hide unselected item labels
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
             items: [
-              // Build BottomNavigationBarItem widgets for each tab
               CustomBottomNavBarItem(IconsAssets.icHome, "Home"),
               CustomBottomNavBarItem(IconsAssets.icCategory, "Category"),
               CustomBottomNavBarItem(IconsAssets.icWithList, "WishList"),
@@ -70,15 +70,15 @@ class CustomBottomNavBarItem extends BottomNavigationBarItem {
       : super(
           label: title,
           icon: ImageIcon(
-            AssetImage(iconPath), // Inactive icon image
-            color: ColorManager.white, // Inactive icon color
+            AssetImage(iconPath),
+            color: ColorManager.white,
           ),
           activeIcon: CircleAvatar(
-            backgroundColor: ColorManager.white, // Background of active icon
+            backgroundColor: ColorManager.white,
             child: ImageIcon(
               AssetImage(iconPath),
               color: ColorManager
-                  .primary, // Active icon imagecolor: ColorManager.primary, // Active icon color
+                  .primary,
             ),
           ),
         );

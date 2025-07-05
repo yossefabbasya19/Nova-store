@@ -32,3 +32,17 @@ final class GetAllBrandsFailure extends HomeState {
 
   GetAllBrandsFailure({required this.errorMessage});
 }
+//best seller product
+final class GetBestSellerSuccess extends HomeState {
+  final List<ProductDetailsDM> products;
+
+  GetBestSellerSuccess({required this.products});
+}
+
+final class GetBestSellerLoading extends HomeState {}
+
+final class GetBestSellerFailure extends HomeState {
+  final String errorMessage;
+
+  GetBestSellerFailure({required this.errorMessage});
+}

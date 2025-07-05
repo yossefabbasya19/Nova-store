@@ -10,9 +10,10 @@ abstract class ApiService {
   }
 
   static Future get(String endPoint,
-      {Map<String, dynamic>? data, int pageNumber = 1}) async {
-    Response response = await dio.get(endPoint,
-        data: data, queryParameters: {"limit": 10, "page": pageNumber});
+      {Map<String, dynamic>? data,
+      Map<String, dynamic>? queryParameters}) async {
+    Response response =
+        await dio.get(endPoint, data: data, queryParameters: queryParameters);
     return response.data;
   }
 }

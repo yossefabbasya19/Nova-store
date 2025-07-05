@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:ecommerce_app/core/model/brands_dm/brands_details_dm.dart';
 import 'package:ecommerce_app/core/model/category_dm/category_details_dm.dart';
+import 'package:ecommerce_app/core/model/product_dm/Data.dart';
 import 'package:ecommerce_app/features/main_layout/home/data/repo/home_repo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
@@ -10,8 +11,6 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.homeRepo) : super(HomeInitial());
   final HomeRepo homeRepo;
-  ScrollController brandsScrollController = ScrollController();
-  int brandPage = 1;
   Future<void> getAllCategory() async {
     emit(GetAllCategoryLoading());
     var result = await homeRepo.getAllCategory();
@@ -27,7 +26,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> getAllBrands() async {
     emit(GetAllBrandsLoading());
-    var result = await homeRepo.getAllBrands(pageNumber: brandPage);
+    var result = await homeRepo.getAllBrands();
     result.fold(
       (failure) {
         emit(GetAllBrandsFailure(errorMessage: failure.errorMessage));
@@ -37,16 +36,14 @@ class HomeCubit extends Cubit<HomeState> {
       },
     );
   }
-  brandsPagination(){
-    brandsScrollController.addListener(() async{
-      if(brandsScrollController.position.atEdge){
-        bool isTop = brandsScrollController.position.pixels!=0;
-        if(isTop){
-          brandPage ++;
-          await getAllBrands();
-        }
-      }
-    },);
-
+  Future<void> getBestSeller()async{
+    emit(GetBestSellerLoading());
+   var result= await  homeRepo.getBestSeller();
+   result.fold((failure) {
+     emit(GetBestSellerFailure(errorMessage: failure.errorMessage));
+   }, (product) {
+     emit(GetBestSellerSuccess(products: product.products!));
+   },);
   }
+
 }

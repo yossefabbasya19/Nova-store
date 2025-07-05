@@ -8,4 +8,11 @@ abstract class ApiService {
     Response response = await dio.post(endPoint, data: data);
     return response.data;
   }
+
+  static Future get(String endPoint,
+      {Map<String, dynamic>? data, int pageNumber = 1}) async {
+    Response response = await dio.get(endPoint,
+        data: data, queryParameters: {"limit": 10, "page": pageNumber});
+    return response.data;
+  }
 }

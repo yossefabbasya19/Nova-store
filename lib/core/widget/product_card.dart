@@ -38,10 +38,10 @@ class ProductCard extends StatelessWidget {
       width: 200.w,
       height: 280.h,
       child: Container(
-        width: 280,
-        margin: EdgeInsets.all(6.w),
+        width: 280.w,
+        margin: EdgeInsets.symmetric(horizontal: 6.w),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(24.r),
           color: Colors.white,
           border: Border.all(
             width: 1,
@@ -70,7 +70,6 @@ class ProductCard extends StatelessWidget {
             //     ),
             //   ),
             // ),
-
             Expanded(
               flex: 1,
               child: Stack(

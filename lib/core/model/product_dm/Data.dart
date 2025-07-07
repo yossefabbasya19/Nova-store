@@ -59,7 +59,7 @@ class ProductDetailsDM {
   String? imageCover;
   CategoryDetailsDm? category;
   BrandsDetailsDm? brand;
-  double? ratingsAverage;
+  num? ratingsAverage;
   String? createdAt;
   String? updatedAt;
   String? productId;

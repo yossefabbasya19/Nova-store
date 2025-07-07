@@ -40,7 +40,7 @@ class HomeApiDataSource extends HomeDataSource {
   @override
   Future<Either<Failure, ProductResponse>> getBestSeller() async {
     try {
-      var response = await ApiService.get(ApiConstant.getBestSellerEndpoint,
+      var response = await ApiService.get(ApiConstant.getProductEndpoint,
           queryParameters: {"limit": 10, "sort": "-sold"});
       ProductResponse productResponse = ProductResponse.fromJson(response);
       return Right(productResponse);

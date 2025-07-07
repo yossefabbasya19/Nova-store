@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/core/resources/assets_manager.dart';
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/widget/home_screen_app_bar.dart';
-import 'package:ecommerce_app/features/main_layout/categories/presentation/categories_tab.dart';
+import 'package:ecommerce_app/features/main_layout/categories/presentation/views/categories_tab.dart';
 import 'package:ecommerce_app/features/main_layout/favourite/presentation/favourite_screen.dart';
 import 'package:ecommerce_app/features/main_layout/profile_tab/presentation/profile_tab.dart';
 import 'package:flutter/material.dart';

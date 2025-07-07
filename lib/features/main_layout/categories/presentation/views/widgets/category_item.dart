@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/font_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
@@ -16,16 +18,13 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Handle item click by calling onItemClick callback
     return InkWell(
       onTap: () => onItemClick(index),
       child: Container(
-        // Set background color based on selection
         color: isSelected?ColorManager.white:Colors.transparent,
         padding: const EdgeInsets.all(AppPadding.p8),
         child: Row(
           children: [
-            //Show/hide the indicator based on selection
             Visibility(
               visible: isSelected,
               child: Container(
@@ -37,7 +36,6 @@ class CategoryItem extends StatelessWidget {
                 ),
               ),
             ),
-            // wrap the text with expanded to avoid overflow error
             Expanded(
                 child: Padding(
               padding: const EdgeInsets.symmetric(

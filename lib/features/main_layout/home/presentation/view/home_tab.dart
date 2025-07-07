@@ -178,9 +178,9 @@ class _HomeTabState extends State<HomeTab> {
                                 title: products[index].title!,
                                 description:
                                 products[index].description!,
-                                rating: 4.5,
-                                price: 1100,
-                                priceBeforeDiscound: 1500,
+                                rating:products[index].ratingsAverage!.toDouble(),
+                                price: products[index].price!.toDouble(),
+                                priceBeforeDiscound: products[index].price!.toDouble()+81,
                                 image: products[index].imageCover!,
                               );
                             },

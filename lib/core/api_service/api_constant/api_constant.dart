@@ -4,5 +4,5 @@ abstract class ApiConstant {
   static String signinEndpoint = "auth/signin";
   static String getAllCategoryEndpoint = "categories";
   static String getAllBrandsEndpoint = "brands";
-  static String getBestSellerEndpoint = "products";
+  static String getProductEndpoint = "products";
 }

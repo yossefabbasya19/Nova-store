@@ -13,7 +13,7 @@ class CustomProductWidget extends StatelessWidget {
   final String description;
   final double price;
   final double discountPercentage;
-  final double rating;
+  final num rating;
 
   const CustomProductWidget({
     super.key,
@@ -62,41 +62,39 @@ class CustomProductWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              flex: 5,
-              child: Stack(
-                alignment: AlignmentDirectional.center,
-                children: [
-                  // Not working with the lastest flutter version
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                // Not working with the lastest flutter version
 
-                  // CachedNetworkImage(
-                  //   imageUrl: image,
-                  //   height: height * 0.15,
-                  //   width: double.infinity,
-                  //   fit: BoxFit.cover,
-                  //   placeholder: (context, url) =>
-                  //       const Center(child: CircularProgressIndicator()),
-                  //   errorWidget: (context, url, error) => const Icon(Icons.error),
-                  // ),
-                  // Image.network(
-                  //   image,
-                  //   fit: BoxFit.cover,
-                  // ),
-                  ClipRRect(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(14.r)),
-                    child: Image.asset(
-                      image,
-                      fit: BoxFit.cover,
-                      width: width,
-                    ),
+                // CachedNetworkImage(
+                //   imageUrl: image,
+                //   height: height * 0.15,
+                //   width: double.infinity,
+                //   fit: BoxFit.cover,
+                //   placeholder: (context, url) =>
+                //       const Center(child: CircularProgressIndicator()),
+                //   errorWidget: (context, url, error) => const Icon(Icons.error),
+                // ),
+                // Image.network(
+                //   image,
+                //   fit: BoxFit.cover,
+                // ),
+                ClipRRect(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(14.r)),
+                  child: Image.network(
+                    height: height*0.15,
+                    image,
+                    fit: BoxFit.cover,
+                    width: width,
                   ),
-                  Positioned(
-                      top: height * 0.01,
-                      right: width * 0.02,
-                      child: HeartButton(onTap: () {})),
-                ],
-              ),
+                ),
+                Positioned(
+                    top: height * 0.01,
+                    right: width * 0.02,
+                    child: HeartButton(onTap: () {})),
+              ],
             ),
             Expanded(
               flex: 5,
@@ -106,6 +104,7 @@ class CustomProductWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
+                      maxLines: 2,
                       truncateTitle(title),
                       style: getMediumStyle(
                         color: ColorManager.textColor,
@@ -114,6 +113,7 @@ class CustomProductWidget extends StatelessWidget {
                     ),
                     SizedBox(height: height * 0.002),
                     Text(
+                      maxLines: 1,
                       truncateDescription(description),
                       style: getRegularStyle(
                         color: ColorManager.textColor,
@@ -122,7 +122,7 @@ class CustomProductWidget extends StatelessWidget {
                     ),
                     SizedBox(height: height * 0.01),
                     SizedBox(
-                      width: width * 0.3,
+                      width: width ,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

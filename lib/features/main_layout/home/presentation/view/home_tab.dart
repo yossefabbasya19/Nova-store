@@ -9,6 +9,7 @@ import 'package:ecommerce_app/core/widget/product_card.dart';
 import 'package:ecommerce_app/features/main_layout/home/presentation/view/widgets/custom_brand_widget.dart';
 import 'package:ecommerce_app/features/main_layout/home/presentation/view/widgets/custom_category_widget.dart';
 import 'package:ecommerce_app/features/main_layout/home/presentation/view_model/home_cubit.dart';
+import 'package:ecommerce_app/features/products_screen/presentation/widgets/custom_product_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -169,19 +170,19 @@ class _HomeTabState extends State<HomeTab> {
                         ),
                       ):SizedBox(
                         child: SizedBox(
-                          height: 360.h,
+                          height: 310.h,
                           child: ListView.builder(
 
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
-                              return  ProductCard(
-                                title: products[index].title!,
-                                description:
-                                products[index].description!,
-                                rating:products[index].ratingsAverage!.toDouble(),
-                                price: products[index].price!.toDouble(),
-                                priceBeforeDiscound: products[index].price!.toDouble()+81,
-                                image: products[index].imageCover!,
+                              return  Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 4),
+                                child: CustomProductWidget(
+
+                                  width: MediaQuery.sizeOf(context).width,
+                                  height: MediaQuery.sizeOf(context).height,
+                                 productDetailsDM: products[index],
+                                ),
                               );
                             },
                             itemCount: products.length,

@@ -1,19 +1,22 @@
+import 'package:ecommerce_app/core/model/product_dm/Data.dart';
 import 'package:ecommerce_app/core/resources/assets_manager.dart';
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:ecommerce_app/core/widget/custom_elevated_button.dart';
-import 'package:ecommerce_app/features/product_details/presentation/widgets/product_color.dart';
-import 'package:ecommerce_app/features/product_details/presentation/widgets/product_description.dart';
-import 'package:ecommerce_app/features/product_details/presentation/widgets/product_item.dart';
-import 'package:ecommerce_app/features/product_details/presentation/widgets/product_label.dart';
-import 'package:ecommerce_app/features/product_details/presentation/widgets/product_rating.dart';
-import 'package:ecommerce_app/features/product_details/presentation/widgets/product_size.dart';
-import 'package:ecommerce_app/features/product_details/presentation/widgets/product_slider.dart';
+import 'package:ecommerce_app/features/product_details/presentation/view/widgets/product_color.dart';
+import 'package:ecommerce_app/features/product_details/presentation/view/widgets/product_description.dart';
+import 'package:ecommerce_app/features/product_details/presentation/view/widgets/product_item.dart';
+import 'package:ecommerce_app/features/product_details/presentation/view/widgets/product_label.dart';
+import 'package:ecommerce_app/features/product_details/presentation/view/widgets/product_rating.dart';
+import 'package:ecommerce_app/features/product_details/presentation/view/widgets/product_size.dart';
+import 'package:ecommerce_app/features/product_details/presentation/view/widgets/product_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductDetails extends StatelessWidget {
-  const ProductDetails({super.key});
+  final ProductDetailsDM productDetailsDM;
+
+  const ProductDetails({super.key, required this.productDetailsDM});
 
   @override
   Widget build(BuildContext context) {
@@ -44,37 +47,32 @@ class ProductDetails extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 50.h),
           child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const ProductSlider(items: [
-              ProductItem(
-                imageUrl:
-                    'https://assets.adidas.com/images/w_1880,f_auto,q_auto/6776024790f445b0873ee66fdcde54a1_9366/GX6544_HM3_hover.jpg',
-              ),
-              ProductItem(
-                imageUrl:
-                    'https://assets.adidas.com/images/w_1880,f_auto,q_auto/6776024790f445b0873ee66fdcde54a1_9366/GX6544_HM3_hover.jpg',
-              ),
-              ProductItem(
-                imageUrl:
-                    "https://assets.adidas.com/images/w_1880,f_auto,q_auto/6776024790f445b0873ee66fdcde54a1_9366/GX6544_HM3_hover.jpg",
-              )
-            ], initialIndex: 0),
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            ProductSlider(
+                items: productDetailsDM.images!.map(
+                      (e) {
+                    return ProductItem(imageUrl: e);
+                  },
+                ).toList(),
+                initialIndex: 0),
             SizedBox(
               height: 24.h,
             ),
-            const ProductLabel(
-                productName: 'Nike Air Jordon', productPrice: 'EGP 3,500'),
+            ProductLabel(
+                productName: productDetailsDM.title!,
+                productPrice: "${productDetailsDM.price!.toString()} \$"),
             SizedBox(
               height: 16.h,
             ),
-            const ProductRating(
-                productBuyers: '3,230', productRating: '4.8 (7,500)'),
+            ProductRating(
+                productBuyers: productDetailsDM.sold!.toString(),
+                productRating: "${productDetailsDM.ratingsAverage}(${productDetailsDM.ratingsQuantity})"),
             SizedBox(
               height: 16.h,
             ),
-            const ProductDescription(
+             ProductDescription(
                 productDescription:
-                    'Nike is a multinational corporation that designs, develops, and sells athletic footwear ,apparel, and accessories'),
+                productDetailsDM.description!),
             ProductSize(
               size: const [35, 38, 39, 40],
               onSelected: () {},
@@ -101,7 +99,7 @@ class ProductDetails extends StatelessWidget {
                     Text(
                       'Total price',
                       style: getMediumStyle(
-                              color: ColorManager.primary.withOpacity(.6))
+                          color: ColorManager.primary.withOpacity(.6))
                           .copyWith(fontSize: 18.sp),
                     ),
                     SizedBox(
@@ -109,8 +107,8 @@ class ProductDetails extends StatelessWidget {
                     ),
                     Text('EGP 3,500',
                         style:
-                            getMediumStyle(color: ColorManager.appBarTitleColor)
-                                .copyWith(fontSize: 18.sp))
+                        getMediumStyle(color: ColorManager.appBarTitleColor)
+                            .copyWith(fontSize: 18.sp))
                   ],
                 ),
                 SizedBox(

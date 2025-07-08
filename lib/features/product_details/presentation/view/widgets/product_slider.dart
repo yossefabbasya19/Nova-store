@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../../../../core/resources/color_manager.dart';
+import '../../../../../core/resources/color_manager.dart';
 
 class ProductSlider extends StatefulWidget {
   const ProductSlider({super.key, required this.items, required this.initialIndex});
@@ -36,7 +36,7 @@ class _ProductSliderState extends State<ProductSlider> {
             aspectRatio: 199.w/150.h,
             initialPage: widget.initialIndex,
             enlargeCenterPage: true,
-            viewportFraction: 1,
+            viewportFraction: 0.5,
             onPageChanged: (index, reason) {
               setState(() {
                 currentIndex = index;

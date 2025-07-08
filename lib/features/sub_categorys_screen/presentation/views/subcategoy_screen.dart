@@ -69,18 +69,14 @@ class _ProductsScreenState extends State<SubcategoryScreen> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 8,
                       mainAxisSpacing: 8,
-                      childAspectRatio: 7 / 9,
+                      childAspectRatio: 7 / 10,
                     ),
                     itemBuilder: (context, index) {
                       return CustomProductWidget(
-                          image: products[index].imageCover!,
-                          title: products[index].title!,
-                          price: products[index].price!.toDouble(),
-                          rating: products[index].ratingsAverage!,
-                          discountPercentage: 20,
+                          productDetailsDM: products[index],
                           height: height,
                           width: width,
-                          description: products[index].description!);
+                          );
                     },
                     scrollDirection: Axis.vertical,
                   ),

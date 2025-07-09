@@ -84,7 +84,7 @@ class CustomProductWidget extends StatelessWidget {
                 Positioned(
                     top: height * 0.01,
                     right: width * 0.02,
-                    child: HeartButton(onTap: () {})),
+                    child: HeartButton(onTap: () {},productDetailsDM: productDetailsDM,)),
               ],
             ),
             Expanded(

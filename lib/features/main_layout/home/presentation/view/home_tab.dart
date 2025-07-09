@@ -172,7 +172,6 @@ class _HomeTabState extends State<HomeTab> {
                         child: SizedBox(
                           height: 310.h,
                           child: ListView.builder(
-
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return  Padding(

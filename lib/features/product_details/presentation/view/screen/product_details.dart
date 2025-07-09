@@ -1,8 +1,13 @@
+import 'package:ecommerce_app/core/helper/snack_bar.dart';
 import 'package:ecommerce_app/core/model/product_dm/Data.dart';
 import 'package:ecommerce_app/core/resources/assets_manager.dart';
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
+import 'package:ecommerce_app/core/routes_manager/routes.dart';
 import 'package:ecommerce_app/core/widget/custom_elevated_button.dart';
+import 'package:ecommerce_app/features/product_details/data/data_source/product_details_api_data_source.dart';
+import 'package:ecommerce_app/features/product_details/data/model/add_cart/add_to_cart_request.dart';
+import 'package:ecommerce_app/features/product_details/data/repo/product_details_repo_imple.dart';
 import 'package:ecommerce_app/features/product_details/presentation/view/widgets/product_color.dart';
 import 'package:ecommerce_app/features/product_details/presentation/view/widgets/product_description.dart';
 import 'package:ecommerce_app/features/product_details/presentation/view/widgets/product_item.dart';
@@ -39,13 +44,17 @@ class _ProductDetailsState extends State<ProductDetails> {
         ),
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+
+              },
               icon: ImageIcon(
                 AssetImage(IconsAssets.icSearch),
                 color: ColorManager.primary,
               )),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.cartRoute);
+              },
               icon: Icon(
                 Icons.shopping_cart_outlined,
                 color: ColorManager.primary,
@@ -53,7 +62,8 @@ class _ProductDetailsState extends State<ProductDetails> {
         ],
       ),
       body: BlocProvider(
-        create: (context) => ProductDetailsCubit(),
+        create: (context) => ProductDetailsCubit(ProductDetailsRepoImple(
+            productDetailsDataSource: ProductDetailsApiDataSource())),
         child: Builder(builder: (context) {
           return SingleChildScrollView(
             child: Padding(
@@ -79,7 +89,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       height: 16.h,
                     ),
                     ProductRating(
-                      quantity: widget.productDetailsDM.quantity!,
+                        quantity: widget.productDetailsDM.quantity!,
                         price: widget.productDetailsDM.price!,
                         productBuyers: widget.productDetailsDM.sold!.toString(),
                         productRating:
@@ -88,7 +98,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                       height: 16.h,
                     ),
                     ProductDescription(
-                        productDescription: widget.productDetailsDM.description!),
+                        productDescription:
+                            widget.productDetailsDM.description!),
                     ProductSize(
                       size: const [35, 38, 39, 40],
                       onSelected: () {},
@@ -111,7 +122,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     ),
                     BlocConsumer<ProductDetailsCubit, ProductDetailsState>(
                       listener: (context, state) {
-                        if(state is TotalPriceSuccess){
+                        if (state is TotalPriceSuccess) {
                           totalPrice = state.totalPrice;
                         }
                       },
@@ -123,8 +134,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 Text(
                                   'Total price',
                                   style: getMediumStyle(
-                                      color: ColorManager.primary
-                                          .withOpacity(.6))
+                                          color: ColorManager.primary
+                                              .withOpacity(.6))
                                       .copyWith(fontSize: 18.sp),
                                 ),
                                 SizedBox(
@@ -132,23 +143,43 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 ),
                                 Text('EGP $totalPrice',
                                     style: getMediumStyle(
-                                        color:
-                                        ColorManager.appBarTitleColor)
+                                            color:
+                                                ColorManager.appBarTitleColor)
                                         .copyWith(fontSize: 18.sp))
                               ],
                             ),
                             SizedBox(
                               width: 33.w,
                             ),
-                            Expanded(
-                              child: CustomElevatedButton(
-                                label: 'Add to cart',
-                                onTap: () {},
-                                prefixIcon: Icon(
-                                  Icons.add_shopping_cart_outlined,
-                                  color: ColorManager.white,
-                                ),
-                              ),
+                            BlocConsumer<ProductDetailsCubit,
+                                ProductDetailsState>(
+                              listener: (context, state) {
+                                if (state is AddProductToCartFailure) {
+                                  snackBar(context, state.errorMessage);
+                                } else if (state is AddProductToCartSuccess) {
+                                  snackBar(context, "product added to cart");
+                                  Navigator.pushReplacementNamed(context,Routes.cartRoute);
+                                }
+                              },
+                              builder: (context, state) {
+                                return Expanded(
+                                  child: CustomElevatedButton(
+                                    isLoading: state is AddProductToCartLoading,
+                                    label: 'Add to cart',
+                                    onTap: () {
+                                      BlocProvider.of<ProductDetailsCubit>(
+                                              context)
+                                          .addProductToCart(AddToCartRequest(
+                                              productID:
+                                                  widget.productDetailsDM.id!));
+                                    },
+                                    prefixIcon: Icon(
+                                      Icons.add_shopping_cart_outlined,
+                                      color: ColorManager.white,
+                                    ),
+                                  ),
+                                );
+                              },
                             )
                           ],
                         );

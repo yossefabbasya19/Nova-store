@@ -46,11 +46,14 @@ class CustomElevatedButton extends StatelessWidget {
               width: 24.w,
             ),
             isLoading!
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: ColorManager.darkBlue,
+                ? SizedBox(
+              height: MediaQuery.sizeOf(context).height*0.04,
+                  child: Center(
+                      child: CircularProgressIndicator(
+                        color: ColorManager.lightGrey,
+                      ),
                     ),
-                  )
+                )
                 : Text(
                     label,
                     style: textStyle ??

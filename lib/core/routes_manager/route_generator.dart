@@ -1,12 +1,14 @@
+import 'package:ecommerce_app/core/data/main_layout_data/main_layout_api_data_source.dart';
 import 'package:ecommerce_app/core/di/di.dart';
 import 'package:ecommerce_app/core/model/product_dm/Data.dart';
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
+import 'package:ecommerce_app/core/view_model/main_layout_cubit/main_layout_cubit.dart';
 import 'package:ecommerce_app/features/auth/data/data_source/auth_api_data_source.dart';
 import 'package:ecommerce_app/features/auth/data/repo/auth_repo_imple.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:ecommerce_app/features/auth/presentation/view_model/auth_cubit.dart';
-import 'package:ecommerce_app/features/cart/screens/cart_screen.dart';
+import 'package:ecommerce_app/features/cart/presentation/screens/cart_screen.dart';
 import 'package:ecommerce_app/features/main_layout/main_layout.dart';
 import 'package:ecommerce_app/features/product_details/presentation/view/screen/product_details.dart';
 import 'package:ecommerce_app/features/products_screen/data/data_source/products_screen_api_data_source.dart';
@@ -29,7 +31,12 @@ class RouteGenerator {
       case Routes.cartRoute:
         return MaterialPageRoute(builder: (_) => const CartScreen());
       case Routes.mainRoute:
-        return MaterialPageRoute(builder: (_) => const MainLayout());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (context) =>
+                      MainLayoutCubit(MainLayoutApiDataSource()),
+                  child: MainLayout(),
+                ));
 
       case Routes.productsScreenRoute:
         return MaterialPageRoute(

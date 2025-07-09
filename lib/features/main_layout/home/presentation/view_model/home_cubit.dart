@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:ecommerce_app/core/model/brands_dm/brands_details_dm.dart';
 import 'package:ecommerce_app/core/model/category_dm/category_details_dm.dart';
 import 'package:ecommerce_app/core/model/product_dm/Data.dart';
+import 'package:ecommerce_app/core/shared_pref/shared_pref.dart';
+import 'package:ecommerce_app/features/main_layout/home/data/model/wash_list_request.dart';
 import 'package:ecommerce_app/features/main_layout/home/data/repo/home_repo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
@@ -11,6 +13,7 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.homeRepo) : super(HomeInitial());
   final HomeRepo homeRepo;
+
   Future<void> getAllCategory() async {
     emit(GetAllCategoryLoading());
     var result = await homeRepo.getAllCategory();
@@ -36,14 +39,19 @@ class HomeCubit extends Cubit<HomeState> {
       },
     );
   }
-  Future<void> getBestSeller()async{
+
+  Future<void> getBestSeller() async {
     emit(GetBestSellerLoading());
-   var result= await  homeRepo.getBestSeller();
-   result.fold((failure) {
-     emit(GetBestSellerFailure(errorMessage: failure.errorMessage));
-   }, (product) {
-     emit(GetBestSellerSuccess(products: product.products!));
-   },);
+    var result = await homeRepo.getBestSeller();
+    result.fold(
+      (failure) {
+        emit(GetBestSellerFailure(errorMessage: failure.errorMessage));
+      },
+      (product) {
+        emit(GetBestSellerSuccess(products: product.products!));
+      },
+    );
   }
+
 
 }

@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:ecommerce_app/core/api_service/api_constant/api_constant.dart';
 import 'package:ecommerce_app/core/api_service/api_service.dart';
 import 'package:ecommerce_app/core/failure/failure.dart';
+import 'package:ecommerce_app/core/shared_pref/shared_pref.dart';
 import 'package:ecommerce_app/features/auth/data/data_source/auth_data_source.dart';
 import 'package:ecommerce_app/features/auth/data/model/signin_request.dart';
 import 'package:ecommerce_app/features/auth/data/model/signin_response.dart';
@@ -18,6 +19,7 @@ class AuthApiDataSource extends AuthDataSource {
           ApiConstant.signupEndpoint, signupRequest.toJson());
      SignupResponse signupResponse =  SignupResponse.fromJson(response);
       UserDm.currentUser = signupResponse.user;
+      SharedPref().setToken(signupResponse.token);
       return Right(signupResponse);
     } on Exception catch (e) {
       if (e is DioException) {
@@ -34,6 +36,7 @@ class AuthApiDataSource extends AuthDataSource {
           ApiConstant.signinEndpoint, signinRequest.toJson());
       SigninResponse signinResponse = SigninResponse.fromJson(response);
       UserDm.currentUser = signinResponse.user;
+      SharedPref().setToken(signinResponse.token);
       return Right(signinResponse);
     } catch (e) {
       if (e is DioException) {

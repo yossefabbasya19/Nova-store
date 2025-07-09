@@ -2,8 +2,8 @@ import 'package:ecommerce_app/core/resources/assets_manager.dart';
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:ecommerce_app/core/resources/values_manager.dart';
-import 'package:ecommerce_app/features/cart/widgets/cart_item_widget.dart';
-import 'package:ecommerce_app/features/cart/widgets/total_price_and_checkout_botton.dart';
+import 'package:ecommerce_app/features/cart/presentation/widgets/cart_item_widget.dart';
+import 'package:ecommerce_app/features/cart/presentation/widgets/total_price_and_checkout_botton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -29,13 +29,6 @@ class CartScreen extends StatelessWidget {
               color: ColorManager.primary,
             ),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: ImageIcon(
-              AssetImage(IconsAssets.icCart),
-              color: ColorManager.primary,
-            ),
-          ),
         ],
       ),
       body: Padding(
@@ -43,7 +36,6 @@ class CartScreen extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-              // the list of cart items ===============
               child: ListView.separated(
                 itemBuilder: (context, index) => CartItemWidget(
                   imagePath: ImageAssets.categoryCardImage,

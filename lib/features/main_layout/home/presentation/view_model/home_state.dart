@@ -4,6 +4,7 @@ part of 'home_cubit.dart';
 sealed class HomeState {}
 
 final class HomeInitial extends HomeState {}
+
 //categoryBrands
 final class GetAllCategorySuccess extends HomeState {
   final List<CategoryDetailsDm> categorys;
@@ -18,6 +19,7 @@ final class GetAllCategoryFailure extends HomeState {
 
   GetAllCategoryFailure({required this.errorMessage});
 }
+
 //brands
 final class GetAllBrandsSuccess extends HomeState {
   final List<BrandsDetailsDm> brands;
@@ -32,6 +34,7 @@ final class GetAllBrandsFailure extends HomeState {
 
   GetAllBrandsFailure({required this.errorMessage});
 }
+
 //best seller product
 final class GetBestSellerSuccess extends HomeState {
   final List<ProductDetailsDM> products;
@@ -46,3 +49,4 @@ final class GetBestSellerFailure extends HomeState {
 
   GetBestSellerFailure({required this.errorMessage});
 }
+

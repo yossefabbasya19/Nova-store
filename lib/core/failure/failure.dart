@@ -32,7 +32,9 @@ class ServerFailure extends Failure {
 
   factory ServerFailure.fromBadResponse(DioException dioException) {
     if (dioException.response!.statusCode == 401 ||
-        dioException.response!.statusCode == 409) {
+        dioException.response!.statusCode == 409||
+        dioException.response!.statusCode == 500
+    ) {
       return ServerFailure(
           errorMessage:
               dioException.response?.data["message"] ?? dioException.message);

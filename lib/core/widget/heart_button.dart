@@ -37,8 +37,7 @@ class _HeartButtonState extends State<HeartButton> {
         if (state is AddFavoritesFailure) {
           snackBar(context, state.errorMessage);
         }
-        if (state is AddFavoritesLoading) {
-        }
+        if (state is AddFavoritesLoading) {}
       },
       builder: (context, state) {
         return InkWell(
@@ -49,17 +48,17 @@ class _HeartButtonState extends State<HeartButton> {
             if (!isClicked) {
               isClicked = !isClicked;
               heartIcon =
-              !isClicked ? IconsAssets.icHeart : IconsAssets.icClickedHeart;
+                  !isClicked ? IconsAssets.icHeart : IconsAssets.icClickedHeart;
               await BlocProvider.of<SharedLogicCubit>(context).addFavorites(
                   WashListRequest(productID: widget.productDetailsDM!.id!));
             } else {
               isClicked = !isClicked;
               heartIcon =
-              !isClicked ? IconsAssets.icHeart : IconsAssets.icClickedHeart;
+                  !isClicked ? IconsAssets.icHeart : IconsAssets.icClickedHeart;
               await BlocProvider.of<SharedLogicCubit>(context)
                   .removeFavorites(widget.productDetailsDM!.id!);
             }
-
+            widget.onTap!();
           },
           child: Material(
             color: ColorManager.white,

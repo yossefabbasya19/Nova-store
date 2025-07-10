@@ -4,7 +4,7 @@ class AppConstants {
   static const String delete = "Delete";
   static const String searchHint = "what do you search for?";
   static const String addToCart = "Add to Cart";
-
+  static const String apiBase = "https://ecommerce.routemisr.com/Route-Academy-products/";
   static List<Map<String, dynamic>> favoriteProducts = [
     {
       "title": "Nike Air Jordon",

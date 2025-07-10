@@ -43,14 +43,14 @@ class _ProductDetailsState extends State<ProductDetails> {
               .copyWith(fontSize: 20.sp),
         ),
         actions: [
-          IconButton(
+          /*IconButton(
               onPressed: () {
 
               },
               icon: ImageIcon(
                 AssetImage(IconsAssets.icSearch),
                 color: ColorManager.primary,
-              )),
+              )),*/
           IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, Routes.cartRoute);

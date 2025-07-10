@@ -1,22 +1,30 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce_app/core/model/product_dm/Data.dart';
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/constants_manager.dart';
 import 'package:ecommerce_app/core/resources/values_manager.dart';
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
 import 'package:ecommerce_app/core/widget/heart_button.dart';
-import 'package:ecommerce_app/features/main_layout/favourite/presentation/widgets/add_to_cart_button.dart';
-import 'package:ecommerce_app/features/main_layout/favourite/presentation/widgets/favourite_item_details.dart';
+import 'package:ecommerce_app/features/main_layout/favourite/presentation/views/widgets/add_to_cart_button.dart';
+import 'package:ecommerce_app/features/main_layout/favourite/presentation/views/widgets/favourite_item_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class FavoriteItem extends StatelessWidget {
-  const FavoriteItem({super.key, required this.product});
-  final Map<String, dynamic> product;
+class FavoriteItem extends StatefulWidget {
+  const FavoriteItem({super.key, required this.product, required this.onTap});
+  final ProductDetailsDM product;
+  final void Function() onTap;
+
+  @override
+  State<FavoriteItem> createState() => _FavoriteItemState();
+}
+
+class _FavoriteItemState extends State<FavoriteItem> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, Routes.productDetails, arguments: product);
+        Navigator.pushNamed(context, Routes.productDetails, arguments: widget.product);
       },
       child: Container(
         height: AppSize.s135.h,
@@ -38,7 +46,7 @@ class FavoriteItem extends StatelessWidget {
                   width: AppSize.s120.w,
                   height: AppSize.s135.h,
                   fit: BoxFit.cover,
-                  imageUrl: product["imageUrl"],
+                  imageUrl: widget.product.imageCover!,
                   placeholder: (context, url) => Center(
                     child: CircularProgressIndicator(
                       color: ColorManager.primary,
@@ -55,22 +63,22 @@ class FavoriteItem extends StatelessWidget {
                 child: Padding(
                     padding: EdgeInsets.only(left: AppSize.s8.w),
                     child: FavouriteItemDetails(
-                      product: product,
+                      product: widget.product,
                     ))),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                HeartButton(onTap: () {
-                  //TODO:remove product from wish list
-                }),
+                HeartButton(
+                  productDetailsDM: widget.product,
+                    onTap: widget.onTap),
                 SizedBox(height: AppSize.s14.h),
-                AddToCartButton(
+                /*AddToCartButton(
                   onPressed: () {
-                    //TODO:add product to cart
+
                   },
                   text: AppConstants.addToCart,
-                )
+                )*/
               ],
             )
           ],

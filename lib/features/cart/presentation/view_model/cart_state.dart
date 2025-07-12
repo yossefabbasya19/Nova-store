@@ -18,3 +18,15 @@ final class CartFailure extends CartState {
 
   CartFailure({required this.errorMessage});
 }
+// increment item
+final class IncrementItemLoading extends CartState {}
+final class DecrementItemLoading extends CartState {}
+
+final class IncrementItemSuccess extends CartState {
+}
+
+final class IncrementItemFailure extends CartState {
+  final String errorMessage;
+
+  IncrementItemFailure({required this.errorMessage});
+}

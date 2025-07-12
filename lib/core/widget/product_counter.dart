@@ -2,16 +2,18 @@ import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ProductCounter extends StatelessWidget {
+  final bool loading;
   final int productCounter;
   final void Function(int) add;
   final void Function(int) remove;
-  const ProductCounter(
-      {super.key,
-      required this.add,
-      required this.remove,
-      required this.productCounter});
+
+  const ProductCounter({super.key,
+    required this.add,
+    required this.remove,
+    required this.productCounter, required this.loading});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +37,14 @@ class ProductCounter extends StatelessWidget {
           SizedBox(
             width: 18.w,
           ),
-          Text(
+          loading? SizedBox(
+            height: MediaQuery.sizeOf(context).height*0.01,
+            width: MediaQuery.sizeOf(context).width*0.009,
+            child: LoadingAnimationWidget.fourRotatingDots(
+              color: Colors.white,
+              size: 10,
+            ),
+          ):Text(
             '$productCounter',
             style: getMediumStyle(color: ColorManager.white)
                 .copyWith(fontSize: 18.sp),

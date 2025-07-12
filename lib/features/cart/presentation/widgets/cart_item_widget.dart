@@ -19,8 +19,9 @@ class CartItemWidget extends StatelessWidget {
     required this.onDeleteTap,
     required this.quantity,
     required this.onIncrementTap,
-    required this.onDecrementTap,
+    required this.onDecrementTap, required this.loading,
   });
+  final bool loading;
   final String imagePath;
   final String title;
   final Color color;
@@ -115,6 +116,7 @@ class CartItemWidget extends StatelessWidget {
                         ),
                       ),
                       ProductCounter(
+                        loading: loading,
                         add: onIncrementTap,
                         productCounter: quantity,
                         remove: onDecrementTap,

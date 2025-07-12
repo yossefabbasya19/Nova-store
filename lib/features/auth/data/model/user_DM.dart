@@ -2,8 +2,8 @@ import 'package:ecommerce_app/core/model/product_dm/Data.dart';
 
 class UserDm {
   static late UserDm? currentUser;
-  final String email;
-  final String userName;
+   String email;
+   String userName;
   final String? role;
   final List<String> washList;
 

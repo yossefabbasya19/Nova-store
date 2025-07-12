@@ -18,6 +18,7 @@ import 'package:ecommerce_app/features/products_screen/data/repo/products_screen
 import 'package:ecommerce_app/features/products_screen/presentation/screens/products_screen.dart';
 import 'package:ecommerce_app/features/products_screen/presentation/view_model/products_cubit.dart';
 import 'package:ecommerce_app/features/sub_categorys_screen/presentation/views/subcategoy_screen.dart';
+import 'package:ecommerce_app/features/user_address/presentation/views/user_address.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -73,6 +74,8 @@ class RouteGenerator {
                 create: (context) =>
                     AuthCubit(AuthRepoImple(dataSource: AuthApiDataSource())),
                 child: const SignUpScreen()));
+      case Routes.userAddressScreen:
+        return MaterialPageRoute(builder: (context) => UserAddress(),);
       default:
         return unDefinedRoute();
     }

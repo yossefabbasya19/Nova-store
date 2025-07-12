@@ -1,6 +1,9 @@
+import 'package:ecommerce_app/core/helper/snack_bar.dart';
 import 'package:ecommerce_app/core/resources/assets_manager.dart';
 import 'package:ecommerce_app/core/resources/font_manager.dart';
+import 'package:ecommerce_app/features/main_layout/profile_tab/presentation/view_model/profile_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -27,7 +30,9 @@ class BuildTextField extends StatefulWidget {
     this.validation,
     this.onTap,
     this.maxLines,
-    this.prefixIcon, this.borderBackgroundColor, this.suffixIcon,
+    this.prefixIcon,
+    this.borderBackgroundColor,
+    this.suffixIcon, this.onEditingCompletet,
   });
 
   final TextEditingController? controller;
@@ -49,6 +54,7 @@ class BuildTextField extends StatefulWidget {
   final Widget? suffixIcon;
   final String? Function(String?)? validation;
   final void Function()? onTap;
+  final void Function()? onEditingCompletet;
 
   @override
   State<BuildTextField> createState() => _BuildTextFieldState();
@@ -65,24 +71,24 @@ class _BuildTextFieldState extends State<BuildTextField> {
       children: [
         widget.label != null
             ? Padding(
-                padding: const EdgeInsets.only(
-                     top: AppPadding.p2),
-                child: Text(
-                  widget.label!,
-                  style: widget.labelTextStyle ??
-                      getMediumStyle(color: ColorManager.white)
-                          .copyWith(fontSize: FontSize.s18.sp),
-                ),
-              )
+          padding: const EdgeInsets.only(top: AppPadding.p2),
+          child: Text(
+            widget.label!,
+            style: widget.labelTextStyle ??
+                getMediumStyle(color: ColorManager.white)
+                    .copyWith(fontSize: FontSize.s18.sp),
+          ),
+        )
             : const SizedBox(),
         Container(
           margin: const EdgeInsets.only(top: AppMargin.m5),
           decoration: BoxDecoration(
-            color: widget.backgroundColor ??
-                ColorManager.darkGrey.withOpacity(.15),
-            borderRadius: BorderRadius.circular(AppSize.s8),
-            border: Border.all(color: widget.borderBackgroundColor ?? ColorManager.transparent )
-          ),
+              color: widget.backgroundColor ??
+                  ColorManager.darkGrey.withOpacity(.15),
+              borderRadius: BorderRadius.circular(AppSize.s8),
+              border: Border.all(
+                  color: widget.borderBackgroundColor ??
+                      ColorManager.transparent)),
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: TextFormField(
             maxLines: widget.maxLines ?? 1,
@@ -96,12 +102,7 @@ class _BuildTextFieldState extends State<BuildTextField> {
             obscuringCharacter: '*',
             cursorColor: widget.cursorColor ?? ColorManager.black,
             onTap: widget.onTap,
-            onEditingComplete: () {
-              widget.focusNode?.unfocus();
-              if (widget.nextFocus != null) {
-                FocusScope.of(context).requestFocus(widget.nextFocus);
-              }
-            },
+            onEditingComplete: widget.onEditingCompletet,
             textInputAction: widget.nextFocus == null
                 ? TextInputAction.done
                 : TextInputAction.next,
@@ -123,20 +124,20 @@ class _BuildTextFieldState extends State<BuildTextField> {
               prefixIcon: widget.prefixIcon,
               suffixIcon: widget.isObscured
                   ? IconButton(
-                      onPressed: () {
-                        setState(
-                          () {
-                            hidden = !hidden;
-                          },
-                        );
-                      },
-                      iconSize: AppSize.s24,
-                      splashRadius: AppSize.s1,
-                      isSelected: !hidden,
-                      color: widget.cursorColor,
-                      selectedIcon: const Icon(Icons.remove_red_eye_rounded),
-                      icon: SvgPicture.asset(SvgAssets.eye),
-                    )
+                onPressed: () {
+                  setState(
+                        () {
+                      hidden = !hidden;
+                    },
+                  );
+                },
+                iconSize: AppSize.s24,
+                splashRadius: AppSize.s1,
+                isSelected: !hidden,
+                color: widget.cursorColor,
+                selectedIcon: const Icon(Icons.remove_red_eye_rounded),
+                icon: SvgPicture.asset(SvgAssets.eye),
+              )
                   : widget.suffixIcon,
               hintStyle: widget.hintTextStyle ??
                   getRegularStyle(color: ColorManager.grey)
@@ -153,16 +154,16 @@ class _BuildTextFieldState extends State<BuildTextField> {
         errorText == null
             ? const SizedBox()
             : Padding(
-                padding: const EdgeInsets.only(
-                  top: AppPadding.p8,
-                  left: AppPadding.p8,
-                ),
-                child: Text(
-                  errorText!,
-                  style: getMediumStyle(color: ColorManager.white)
-                      .copyWith(fontSize: 18.sp),
-                ),
-              ),
+          padding: const EdgeInsets.only(
+            top: AppPadding.p8,
+            left: AppPadding.p8,
+          ),
+          child: Text(
+            errorText!,
+            style: getMediumStyle(color: ColorManager.white)
+                .copyWith(fontSize: 18.sp),
+          ),
+        ),
       ],
     );
   }

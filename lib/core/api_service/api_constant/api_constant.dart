@@ -9,4 +9,5 @@ abstract class ApiConstant {
   static String cartEndpoint = "cart";
   static String washListEndpoint = "wishlist";
   static String usersEndpoint = "users";
+  static String updateEndpoint = "users/updateMe";
 }

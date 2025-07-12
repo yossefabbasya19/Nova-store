@@ -19,7 +19,8 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  late CartDataResponse productsResponse;
+  CartDataResponse? productsResponse;
+  late int productCount;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,7 @@ class _CartScreenState extends State<CartScreen> {
           }
         },
         builder: (context, state) {
-          if (state is CartLoading) {
+          if (state is CartLoading && productsResponse == null) {
             return Center(
               child: CircularProgressIndicator(
                 color: ColorManager.darkBlue,
@@ -56,19 +57,29 @@ class _CartScreenState extends State<CartScreen> {
                   child: ListView.separated(
                     itemBuilder: (context, index) {
                       List<Products> products =
-                          productsResponse.data!.products!;
+                          productsResponse!.data!.products!;
+                      productCount = products[index].count!;
                       return CartItemWidget(
+                        loading: state is IncrementItemLoading ||state is CartLoading,
                         imagePath: products[index].product!.imageCover!,
                         title: products[index].product!.title!,
                         price: products[index].price!,
-                        quantity: products[index].count!,
-                        onDeleteTap: () async{
-                         await BlocProvider.of<CartCubit>(context)
+                        quantity: productCount,
+                        onDeleteTap: () async {
+                          await BlocProvider.of<CartCubit>(context)
                               .removeSpecificItemCart(
                                   products[index].product!.id!);
                         },
-                        onDecrementTap: (value) {},
-                        onIncrementTap: (value) {},
+                        onDecrementTap: (value) async {
+                          await BlocProvider.of<CartCubit>(context)
+                              .decrementProductCount(products[index].count!,
+                                  products[index].product!.id!);
+                        },
+                        onIncrementTap: (value) async {
+                          await BlocProvider.of<CartCubit>(context)
+                              .incrementProductCount(products[index].count!,
+                                  products[index].product!.id!);
+                        },
                         size: 40,
                         color: Colors.black,
                         colorName: 'Black',
@@ -76,11 +87,11 @@ class _CartScreenState extends State<CartScreen> {
                     },
                     separatorBuilder: (context, index) =>
                         SizedBox(height: AppSize.s12.h),
-                    itemCount: productsResponse.data!.products!.length,
+                    itemCount: productsResponse!.data!.products!.length,
                   ),
                 ),
                 TotalPriceAndCheckoutBotton(
-                  totalPrice: productsResponse.data!.totalCartPrice!,
+                  totalPrice: productsResponse!.data!.totalCartPrice!,
                   checkoutButtonOnTap: () {},
                 ),
                 SizedBox(height: 10.h),

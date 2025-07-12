@@ -76,6 +76,7 @@ class _ProductRatingState extends State<ProductRating> {
           },
           builder: (context, state) {
             return ProductCounter(
+              loading: false,
                 add: (_) {
                   BlocProvider.of<ProductDetailsCubit>(context)
                       .calculatePriceBaseCounterOfSpecificProductIncrease(

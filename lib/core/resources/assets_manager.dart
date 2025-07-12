@@ -27,7 +27,7 @@ abstract class ImageAssets {
 }
 
 class SvgAssets{
-  static const String routeLogo = "$svgPath/route.svg";
+  static const String routeLogo = "$svgPath/Nova.svg";
   static const String eye = "$svgPath/Eye.svg";
   static const String edit = "$svgPath/edit (1) 5.svg";
 }

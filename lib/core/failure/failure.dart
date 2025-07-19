@@ -39,10 +39,17 @@ class ServerFailure extends Failure {
           errorMessage:
               dioException.response?.data["message"] ?? dioException.message);
     } else if (dioException.response!.statusCode == 400) {
-      return ServerFailure(
+      if(dioException.response?.data["message"] == null) {
+        return ServerFailure(
           errorMessage: dioException.response?.data["errors"]["param"]+" "+dioException.response?.data["errors"]["msg"] ??
               dioException.message);
-    } else {
+      }else{
+        return ServerFailure(errorMessage: dioException.response?.data["message"]);
+      }
+    } else if(dioException.response!.statusCode == 404){
+      return ServerFailure(errorMessage: dioException.response!.data["message"]);
+    }
+    else {
       return ServerFailure(
           errorMessage: dioException.message ?? 'please try later');
     }

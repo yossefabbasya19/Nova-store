@@ -16,14 +16,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/resources/font_manager.dart';
 import '../../../../core/resources/styles_manager.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class ForgetPasswordScreen extends StatefulWidget {
+  const ForgetPasswordScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<ForgetPasswordScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends State<ForgetPasswordScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -61,7 +61,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         .copyWith(fontSize: FontSize.s24.sp),
                   ),
                   Text(
-                    'Please sign in with your mail',
+                    'Please enter your mail',
                     style: getLightStyle(color: ColorManager.white)
                         .copyWith(fontSize: FontSize.s16.sp),
                   ),
@@ -79,44 +79,15 @@ class _SignInScreenState extends State<SignInScreen> {
                   SizedBox(
                     height: AppSize.s28.h,
                   ),
-                  BuildTextField(
-                    controller: passwordController,
-                    hint: 'enter your password',
-                    backgroundColor: ColorManager.white,
-                    label: 'Password',
-                    validation: AppValidators.validatePassword,
-                    isObscured: true,
-                    textInputType: TextInputType.text,
-                  ),
-                  SizedBox(
-                    height: AppSize.s8.h,
-                  ),
-                  Row(
-                    children: [
-                      const Spacer(),
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, Routes.forgetPasswordScreen);
-                          },
-                          child: Text(
-                            'Forget password?',
-                            style: getMediumStyle(color: ColorManager.white)
-                                .copyWith(fontSize: FontSize.s18.sp),
-                          )),
-                    ],
-                  ),
-                  SizedBox(
-                    height: AppSize.s60.h,
-                  ),
                   BlocConsumer<AuthCubit, AuthState>(
                     listener: (context, state) {
-                      if (state is SigninFailure) {
+                      if (state is ForgetPasswordFailure) {
                         snackBar(context, state.errorMessage);
                       }
-                      if (state is SigninSuccess) {
-                        Navigator.pushReplacementNamed(
-                            context, Routes.mainRoute);
+                      if (state is ForgetPasswordSuccess) {
+                        snackBar(context, state.responseMessage);
+                        Navigator.pushNamed(
+                            context, Routes.verifyOtpScreen,arguments: emailController.text);
                       }
                     },
                     builder: (context, state) {
@@ -124,49 +95,22 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: SizedBox(
                           // width: MediaQuery.of(context).size.width * .8,
                           child: CustomElevatedButton(
-                            isLoading: state is SigninLoading,
+                            isLoading: state is ForgetPasswordLoading,
                             // borderRadius: AppSize.s8,
                             isStadiumBorder: false,
-                            label: 'Login',
+                            label: 'Reset Password',
                             backgroundColor: ColorManager.white,
                             textStyle: getBoldStyle(
                                 color: ColorManager.primary,
                                 fontSize: AppSize.s18),
                             onTap: () async {
-                              await cubit.signIn(SigninRequest(
-                                  email: emailController.text,
-                                  password: passwordController.text));
+                              await cubit.forgetPassword(emailController.text);
                             },
                           ),
                         ),
                       );
                     },
                   ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Don’t have an account?',
-                        style: getSemiBoldStyle(color: ColorManager.white)
-                            .copyWith(fontSize: FontSize.s16.sp),
-                      ),
-                      SizedBox(
-                        width: AppSize.s8.w,
-                      ),
-                      GestureDetector(
-                        onTap: () =>
-                            Navigator.pushNamed(context, Routes.signUpRoute),
-                        child: Text(
-                          'Create Account',
-                          style: getSemiBoldStyle(color: ColorManager.white)
-                              .copyWith(fontSize: FontSize.s16.sp),
-                        ),
-                      ),
-                    ],
-                  )
                 ],
               ),
             ),

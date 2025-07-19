@@ -4,8 +4,11 @@ import 'package:ecommerce_app/core/routes_manager/routes.dart';
 import 'package:ecommerce_app/core/view_model/main_layout_cubit/main_layout_cubit.dart';
 import 'package:ecommerce_app/features/auth/data/data_source/auth_api_data_source.dart';
 import 'package:ecommerce_app/features/auth/data/repo/auth_repo_imple.dart';
+import 'package:ecommerce_app/features/auth/presentation/screens/forget_password.dart';
+import 'package:ecommerce_app/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:ecommerce_app/features/auth/presentation/screens/sign_up_screen.dart';
+import 'package:ecommerce_app/features/auth/presentation/screens/verify_otp_screen.dart';
 import 'package:ecommerce_app/features/auth/presentation/view_model/auth_cubit.dart';
 import 'package:ecommerce_app/features/cart/data/data_source/cart_api_data_source.dart';
 import 'package:ecommerce_app/features/cart/presentation/screens/cart_screen.dart';
@@ -30,10 +33,39 @@ class RouteGenerator {
           builder: (context) =>
               SubcategoryScreen(subCategoryID: settings.arguments as String),
         );
+      case Routes.forgetPasswordScreen:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) =>
+                AuthCubit(AuthRepoImple(dataSource: AuthApiDataSource())),
+            child: ForgetPasswordScreen(),
+          ),
+        );
+      case Routes.verifyOtpScreen:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) =>
+                AuthCubit(AuthRepoImple(dataSource: AuthApiDataSource())),
+            child: VerifyOtpScreen(
+              email: settings.arguments as String,
+            ),
+          ),
+        );
+      case Routes.ResetPasswordScreen:
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) =>
+                AuthCubit(AuthRepoImple(dataSource: AuthApiDataSource())),
+            child: ResetPasswordScreen(
+              email: settings.arguments as String,
+            ),
+          ),
+        );
       case Routes.cartRoute:
         return MaterialPageRoute(
             builder: (_) => BlocProvider(
-                  create: (context) => CartCubit(CartApiDataSource())..getUserCart(),
+                  create: (context) =>
+                      CartCubit(CartApiDataSource())..getUserCart(),
                   child: CartScreen(),
                 ));
       case Routes.mainRoute:
@@ -75,7 +107,9 @@ class RouteGenerator {
                     AuthCubit(AuthRepoImple(dataSource: AuthApiDataSource())),
                 child: const SignUpScreen()));
       case Routes.userAddressScreen:
-        return MaterialPageRoute(builder: (context) => UserAddress(),);
+        return MaterialPageRoute(
+          builder: (context) => UserAddress(),
+        );
       default:
         return unDefinedRoute();
     }

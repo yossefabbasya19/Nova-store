@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomElevatedButton extends StatelessWidget {
+  final bool? isLoading;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final String label;
@@ -22,7 +23,8 @@ class CustomElevatedButton extends StatelessWidget {
       this.radius,
       this.suffixIcon,
       required this.label,
-      required this.onTap});
+      required this.onTap,
+       this.isLoading = false});
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +45,21 @@ class CustomElevatedButton extends StatelessWidget {
             SizedBox(
               width: 24.w,
             ),
-            Text(
-              label,
-              style: textStyle ??
-                  getMediumStyle(color: ColorManager.white)
-                      .copyWith(fontSize: 20.sp),
-            ),
+            isLoading!
+                ? SizedBox(
+              height: MediaQuery.sizeOf(context).height*0.04,
+                  child: Center(
+                      child: CircularProgressIndicator(
+                        color: ColorManager.lightGrey,
+                      ),
+                    ),
+                )
+                : Text(
+                    label,
+                    style: textStyle ??
+                        getMediumStyle(color: ColorManager.white)
+                            .copyWith(fontSize: 20.sp),
+                  ),
             SizedBox(
               width: 27.w,
             ),

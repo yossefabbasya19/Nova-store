@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/core/model/product_dm/Data.dart';
 import 'package:ecommerce_app/core/resources/color_manager.dart';
 import 'package:ecommerce_app/core/resources/styles_manager.dart';
 import 'package:ecommerce_app/core/routes_manager/routes.dart';
@@ -6,25 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomProductWidget extends StatelessWidget {
+  final ProductDetailsDM productDetailsDM;
   final double width;
   final double height;
-  final String image;
-  final String title;
-  final String description;
-  final double price;
-  final double discountPercentage;
-  final double rating;
 
   const CustomProductWidget({
     super.key,
     required this.width,
     required this.height,
-    required this.image,
-    required this.title,
-    required this.description,
-    required this.price,
-    required this.discountPercentage,
-    required this.rating,
+    required this.productDetailsDM,
   });
 
   String truncateTitle(String title) {
@@ -48,7 +39,7 @@ class CustomProductWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, Routes.productDetails),
+      onTap: () => Navigator.pushNamed(context, Routes.productDetails,arguments: productDetailsDM),
       child: Container(
         width: width * 0.4,
         height: height * 0.3,
@@ -62,41 +53,39 @@ class CustomProductWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              flex: 5,
-              child: Stack(
-                alignment: AlignmentDirectional.center,
-                children: [
-                  // Not working with the lastest flutter version
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                // Not working with the lastest flutter version
 
-                  // CachedNetworkImage(
-                  //   imageUrl: image,
-                  //   height: height * 0.15,
-                  //   width: double.infinity,
-                  //   fit: BoxFit.cover,
-                  //   placeholder: (context, url) =>
-                  //       const Center(child: CircularProgressIndicator()),
-                  //   errorWidget: (context, url, error) => const Icon(Icons.error),
-                  // ),
-                  // Image.network(
-                  //   image,
-                  //   fit: BoxFit.cover,
-                  // ),
-                  ClipRRect(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(14.r)),
-                    child: Image.asset(
-                      image,
-                      fit: BoxFit.cover,
-                      width: width,
-                    ),
+                // CachedNetworkImage(
+                //   imageUrl: image,
+                //   height: height * 0.15,
+                //   width: double.infinity,
+                //   fit: BoxFit.cover,
+                //   placeholder: (context, url) =>
+                //       const Center(child: CircularProgressIndicator()),
+                //   errorWidget: (context, url, error) => const Icon(Icons.error),
+                // ),
+                // Image.network(
+                //   image,
+                //   fit: BoxFit.cover,
+                // ),
+                ClipRRect(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(14.r)),
+                  child: Image.network(
+                    height: height*0.17,
+                    productDetailsDM.imageCover!,
+                    fit: BoxFit.cover,
+                    width: width,
                   ),
-                  Positioned(
-                      top: height * 0.01,
-                      right: width * 0.02,
-                      child: HeartButton(onTap: () {})),
-                ],
-              ),
+                ),
+                Positioned(
+                    top: height * 0.01,
+                    right: width * 0.02,
+                    child: HeartButton(onTap: () {},productDetailsDM: productDetailsDM,)),
+              ],
             ),
             Expanded(
               flex: 5,
@@ -106,7 +95,8 @@ class CustomProductWidget extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      truncateTitle(title),
+                      maxLines: 2,
+                      truncateTitle(productDetailsDM.title!),
                       style: getMediumStyle(
                         color: ColorManager.textColor,
                         fontSize: 14.sp,
@@ -114,7 +104,8 @@ class CustomProductWidget extends StatelessWidget {
                     ),
                     SizedBox(height: height * 0.002),
                     Text(
-                      truncateDescription(description),
+                      maxLines: 1,
+                      truncateDescription(productDetailsDM.description!),
                       style: getRegularStyle(
                         color: ColorManager.textColor,
                         fontSize: 14.sp,
@@ -122,19 +113,19 @@ class CustomProductWidget extends StatelessWidget {
                     ),
                     SizedBox(height: height * 0.01),
                     SizedBox(
-                      width: width * 0.3,
+                      width: width ,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "EGP $price",
+                            "EGP ${productDetailsDM.price}",
                             style: getRegularStyle(
                               color: ColorManager.textColor,
                               fontSize: 14.sp,
                             ),
                           ),
                           Text(
-                            "$discountPercentage %",
+                            "${productDetailsDM.ratingsQuantity!} %",
                             style: getTextWithLine(),
                           ),
                         ],
@@ -150,7 +141,7 @@ class CustomProductWidget extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Review ($rating)",
+                                "Review (${productDetailsDM.ratingsAverage})",
                                 style: getRegularStyle(
                                   color: ColorManager.textColor,
                                   fontSize: 12.sp,

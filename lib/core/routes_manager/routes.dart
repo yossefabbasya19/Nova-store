@@ -6,4 +6,9 @@ class Routes {
   static const String wishRoute = '/wish';
   static const String signInRoute = "/signIn";
   static const String signUpRoute = "/signUp";
+  static const String subcategoryScreen = "/SubcategoryScreen";
+  static const String userAddressScreen = "/userAddressScreen";
+  static const String forgetPasswordScreen = "/ForgetPasswordScreen";
+  static const String verifyOtpScreen = "/verifyOtpScreen";
+  static const String ResetPasswordScreen = "/ResetPasswordScreen";
 }
